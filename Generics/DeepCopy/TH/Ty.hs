@@ -60,6 +60,12 @@ reifyTy n = do
   TyConI (DataD _ n' _ ctors _) <- qReify n
   return $ DataTy (normalizeCon `map` ctors)
 
+reifyTyVars :: Quasi m => TyName -> m [TyVar]
+reifyTyVars n = do
+  TyConI (DataD _ _ tvs _ _) <- qReify n
+  return $ const TyVar `map` tvs
+
+
 normalizeCon :: Con -> DataCtor
 normalizeCon (NormalC n ts) = DataCtor n $ map (typeTy . snd) ts
 normalizeCon (RecC n ts)    = DataCtor n $ map (\(_, s, t) -> typeTy t) ts

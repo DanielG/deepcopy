@@ -20,4 +20,4 @@ instance (DeepCopyTH a, DeepCopyTH b) => DeepCopyTH ((,) a b) where
     deepCopyTH (a, b) = (,) <$> deepCopyTH a <*> deepCopyTH b
 
 
-main = $(pprintQ $ deepCopyInstance (mkName "DeepCopyT") (mkName "deepCopyT") [TyVar, TyVar] (VarE $ mkName "hai"))
+main = $(pprintQ $ makeDeepCopy ''T (mkName "myDeepCopy"))
